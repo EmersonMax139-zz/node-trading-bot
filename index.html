@@ -19,7 +19,8 @@
             async function testShit() {
                 await fetch(`https://api.polygon.io/v1/last/stocks/${ticker}?apiKey=PK3KGE45SL8VTTNZHBVK`, {
                     method: "GET"
-                }).then(response => response.json())
+                })
+                .then(response => response.json())
                 .then(json => {
                     price = json.last.price;
                     console.log(price);

@@ -16,32 +16,46 @@ const alpaca = new Alpaca({
 //     console.log('Current Account:', account)
 // })  
 
-/* 
-    1. Hit polygon api and get prices
-    2. Open/close orders based off that
-*/ 
-
 let ticker = 'QQQ';
-let price = '';
+let price = '12';
 
+const Alpaca_Api = {
+    /**
+     * @param {String} ticker
+     * @param {Number} qty - # of shares you wanna buy 
+     *  Submit a market order at market price
+     */
+    createBuyOrder: (ticker, qty) => {
+        alpaca.createOrder({
+            symbol: ticker,
+            qty: qty,
+            side: 'buy',
+            type: 'market',
+            time_in_force: 'day'
+        })
+    },
 
-async function testShit() {
-    await fetch(`https://api.polygon.io/v1/last/stocks/${ticker}?apiKey=PK3KGE45SL8VTTNZHBVK`, {
-        method: "GET"
-    }).then(response => response.json())
-      .then(json => {
-          price = json.last.price;
-          console.log(price);
-      })
-      .catch(err => console.log(err))
+    /**
+     * @param {String} ticker 
+     * @param {Number} qty 
+     * Submit a limit order to attempt to sell at
+     * particular price when the market opens
+     */
+    createSellOrder: (ticker, qty) => {
+        alpaca.createOrder({
+            symbol: 'AMD',
+            qty: 1,
+            side: 'sell',
+            type: 'limit',
+            time_in_force: 'opg',
+            limit_price: 20.50
+        })
+    }
 }
 
-const price_element = document.getElementById("price_display");
-const ticker_element = document.getElementById("ticker_display");
+module.exports = Alpaca_Api;
 
 
-async function main() {
-    await testShit()
-    ticker_element.innerHTML = ticker;
-    price_element.innerHTML = price;
-}
+
+
+
