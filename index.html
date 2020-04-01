@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title> Trading Jawn </title>
+        <!-- <script src="alpaca.js"></script> -->
+    </head>
+
+    <body>
+        <h1> This is a test </h1>
+        <h2 id="ticker_display"></h2>
+        <p>Current Balance: <span id="price_display"></span></p>
+        <button onclick="main()">Run that shit</button>
+
+        <script>
+            let ticker = 'MNK';
+            let price = '';
+
+
+            async function testShit() {
+                await fetch(`https://api.polygon.io/v1/last/stocks/${ticker}?apiKey=PK3KGE45SL8VTTNZHBVK`, {
+                    method: "GET"
+                }).then(response => response.json())
+                .then(json => {
+                    price = json.last.price;
+                    console.log(price);
+                })
+                .catch(err => console.log(err))
+            }
+
+            const price_element = document.getElementById("price_display");
+            const ticker_element = document.getElementById("ticker_display");
+
+
+            async function main() {
+                await testShit()
+                ticker_element.innerHTML = ticker;
+                price_element.innerHTML = price;
+            }
+        </script>
+    </body>
+</html>
