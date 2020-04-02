@@ -1,10 +1,5 @@
-const express = require('express');
-const app = express();
+const alpaca_api = require('./api/alpaca.js');
+const polygon_api = require('./api/polygon.js');
 
-// Test
-
-app.listen(3000, () => {
-    console.log(`Listening on port ${port}`)
-})
-
+polygon_api.polygon.getStockPriceByTicker('QQQ');
 

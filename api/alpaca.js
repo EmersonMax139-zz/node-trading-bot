@@ -1,12 +1,12 @@
 const fetch = require('node-fetch');
 const Alpaca = require('@alpacahq/alpaca-trade-api');
-const credentials = require('./config/main.js')
+const config = require('../config/main.js')
 
 console.log("Starting Alpaca")
 
 const alpaca = new Alpaca({
-    keyId: credentials.alpaca.API_KEY,
-    secretKey: credentials.alpaca.SECRET,
+    keyId: config.alpaca.API_KEY,
+    secretKey: config.alpaca.SECRET,
     paper: true,
 })
 
