@@ -1,8 +1,5 @@
 const fetch = require('node-fetch');
 
-const API_KEY = 'PK3KGE45SL8VTTNZHBVK';
-const SECRET = 'rZWqrqdKki3Wj1Ax1fdUzHn09hmo5dy6E9vygA5k';
-
 let ticker = 'MNK';
 
 // Hit polygon jawn
