@@ -1,0 +1,10 @@
+TODO: 
+
+Websockets -- 
+
+1. See if multiple tickers work
+2. Maybe do advanced ws example
+
+Scripts --
+
+1. Do buy-near-low

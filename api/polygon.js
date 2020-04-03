@@ -14,21 +14,40 @@ const Polygon_Api = {
          * @param {String} ticker
          * Replace api key
          */
-        getStockPriceByTicker: async (ticker) => {
-            let price = 0; 
+        getStockPriceByTicker: (ticker) => {
 
-            fetch(`https://api.polygon.io/v1/last/stocks/${ticker}?apiKey=${API_KEY}`, {
-                method: "GET"
+            let price = 0; 
+            return new Promise((resolve, reject) => {
+                fetch(`https://api.polygon.io/v1/last/stocks/${ticker}?apiKey=${API_KEY}`, {
+                    method: "GET"
+                })
+                .then(response => response.json())
+                .then(json => {
+                    return resolve(json);
+                })
+                .catch(err => {
+                    return reject(err);
+                })
+            })    
+        },
+
+        /**
+         * Returns top 20 gaining stocks for the day (top % gain)
+         */
+        getTopGainers: () => {
+            return new Promise((resolve, reject) => {
+                fetch(`https://api.polygon.io/v2/snapshot/locale/us/markets/stocks/gainers?apiKey=${API_KEY}`, {
+                    method: "GET"
+                })
+                .then(response => response.json())
+                .then(json => {
+                    return resolve(json);
+                })
+                .catch(err => {
+                    return reject(err);
+                })
             })
-            .then(response => response.json())
-            .then(json => {
-                price = json.last.price;
-                return price;
-            })
-            .catch(err => {
-                console.error(err);
-            })
-        },        
+        }
     }    
 }
 

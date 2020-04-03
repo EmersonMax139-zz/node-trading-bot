@@ -13,16 +13,30 @@ const tickers = [
     "NFLX"
 ]
 
-function checkPriceDiff() {
-    tickers.forEach((ticker) => {
-        let current_price = 0;
+let results = {}
 
-        // Get price
-        current_price = polygon_api.getStockPriceByTicker(ticker);
-        console.log(`${ticker}: $${current_price}`)
-
-        // Get 52 week low
-        low_price =  
-
+async function getPrices() {
+    tickers.forEach(async (ticker) => {
+        const response = await polygon_api.polygon.getStockPriceByTicker(ticker);
+        results[ticker] = response.last.price
     })
 }
+
+async function getTopGainers() {
+    const response = await polygon_api.polygon.getTopGainers();
+    console.log(response);
+}
+
+function imDumb() {
+    getPrices();
+    setTimeout(() => {
+        console.log(results);
+    }, 1000)
+}
+
+// imDumb();
+getTopGainers();
+
+
+
+
