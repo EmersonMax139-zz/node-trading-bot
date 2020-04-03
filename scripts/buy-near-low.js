@@ -13,7 +13,8 @@ const tickers = [
     "NFLX"
 ]
 
-let results = {}
+let results = {};
+let sanitized_data = [];
 
 async function getPrices() {
     tickers.forEach(async (ticker) => {
@@ -27,15 +28,33 @@ async function getTopGainers() {
     console.log(response);
 }
 
+async function getAggregateData() {
+    const response = await polygon_api.polygon.getAggregateData('MSFT', 1, '2020-03-02', '2020-04-02');
+
+    sanitized_data.push({
+        "ticker": response.ticker,
+        "resultsCount": response.resultsCount
+    })
+
+    response.results.forEach(day => {
+        sanitized_data.push({
+            "volume": day.v,
+            "high": day.h,
+            "low": day.l
+        })
+    })
+}
+
 function imDumb() {
-    getPrices();
+    getAggregateData();
     setTimeout(() => {
-        console.log(results);
+        console.log(sanitized_data);
     }, 1000)
 }
 
-// imDumb();
-getTopGainers();
+imDumb();
+
+
 
 
 

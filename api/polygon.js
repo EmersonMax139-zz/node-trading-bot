@@ -47,9 +47,28 @@ const Polygon_Api = {
                     return reject(err);
                 })
             })
+        },
+        /**
+         * Returns some info on a given date range
+         * @params {String} Date 
+         */
+        getAggregateData: (ticker, multiplier, start, end) => {
+            return new Promise((resolve, reject) => {
+                fetch(`https://api.polygon.io/v2/aggs/ticker/${ticker}/range/${multiplier}/day/${start}/${end}?apiKey=${API_KEY}`, {
+                    method: "GET"
+                })
+                .then(response => response.json())
+                .then(json => {
+                    return resolve(json);
+                })
+                .catch(err => {
+                    return reject(err);
+                })
+            })
         }
     }    
 }
 
 module.exports = Polygon_Api
+
 
