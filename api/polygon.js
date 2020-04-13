@@ -12,7 +12,7 @@ const Polygon_Api = {
 
         /**
          * @param {String} ticker
-         * Replace api key
+         * 
          */
         getStockPriceByTicker: (ticker) => {
 
