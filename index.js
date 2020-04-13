@@ -3,7 +3,7 @@ const alpaca_api = require('./api/alpaca.js');
 const polygon_api = require('./api/polygon.js');
 
 async function price() {
-    const response = await polygon_api.polygon.getStockPriceByTicker('QQQ');
+    const response = await polygon_api.polygon.getStockPriceByTicker('MSFT');
     const price = response.last.price
     setTimeout(() => {
         console.log(price);
@@ -11,7 +11,7 @@ async function price() {
 }
 
 setInterval(async () => {
-    const response = await polygon_api.polygon.getStockPriceByTicker('QQQ');
+    const response = await polygon_api.polygon.getStockPriceByTicker('MSFT');
     const price = response.last.price
     setTimeout(() => {
         console.log(price);
