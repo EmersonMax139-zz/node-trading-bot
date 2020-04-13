@@ -3,12 +3,15 @@ const alpaca_api = require('../api/alpaca.js');
 const moment = require('moment');
 const tickers = require('../watchlist.js');
 
+// Initialize
+const polygon = new polygon_api;
+
 let results = {};
 let sanitized_data = [];
 
 async function getPrices() {
     tickers.forEach(async (ticker) => {
-        const response = await polygon_api.polygon.getStockPriceByTicker(ticker);
+        const response = await polygon.getStockPriceByTicker(ticker);
         results[ticker] = response.last.price
     })
     console.log(results);
@@ -17,7 +20,7 @@ async function getPrices() {
 async function getAggregateData(ticker) {
     sanitized_data = [];
 
-    const response = await polygon_api.polygon.getAggregateData(ticker, 1, '2020-03-02', moment().format('YYYY-MM-DD'));
+    const response = await polygon.getAggregateData(ticker, 1, '2020-03-02', moment().format('YYYY-MM-DD'));
 
     // Header for specific ticker
     sanitized_data.push({
