@@ -1,17 +1,7 @@
 const polygon_api = require('../api/polygon.js');
 const alpaca_api = require('../api/alpaca.js');
-
-const tickers = [
-    "QQQ",
-    "SPY",
-    "AMD",
-    "MSFT",
-    "AAPL",
-    "HUYA",
-    "SPCE",
-    "EMR",
-    "NFLX"
-]
+const moment = require('moment');
+const tickers = require('../watchlist.js');
 
 let results = {};
 let sanitized_data = [];
@@ -21,21 +11,21 @@ async function getPrices() {
         const response = await polygon_api.polygon.getStockPriceByTicker(ticker);
         results[ticker] = response.last.price
     })
+    console.log(results);
 }
 
-async function getTopGainers() {
-    const response = await polygon_api.polygon.getTopGainers();
-    console.log(response);
-}
+async function getAggregateData(ticker) {
+    sanitized_data = [];
 
-async function getAggregateData() {
-    const response = await polygon_api.polygon.getAggregateData('MSFT', 1, '2020-03-02', '2020-04-02');
+    const response = await polygon_api.polygon.getAggregateData(ticker, 1, '2020-03-02', moment().format('YYYY-MM-DD'));
 
+    // Header for specific ticker
     sanitized_data.push({
         "ticker": response.ticker,
         "resultsCount": response.resultsCount
     })
 
+    // Only pull certain values from data 
     response.results.forEach(day => {
         sanitized_data.push({
             "volume": day.v,
@@ -43,16 +33,49 @@ async function getAggregateData() {
             "low": day.l
         })
     })
+
+    // Get lowest low over given period
+    periodic_low = 0;
+    for(let i = 0; i < sanitized_data.length; i++) {
+        if(i !== 0) {
+            if(i === 1) {
+                periodic_low = sanitized_data[1].low; 
+            } else {
+                if(sanitized_data[i].low < periodic_low) {
+                    periodic_low = sanitized_data[i].low;
+                }
+            }
+        }
+    }
+
+    // console.log(sanitized_data)
+
+    return {
+        ticker,
+        periodic_low
+    }   
 }
 
-function imDumb() {
-    getAggregateData();
-    setTimeout(() => {
-        console.log(sanitized_data);
-    }, 1000)
+async function buy_near_low() {  
+    // setInterval(() => {
+    //     tickers.forEach(async (ticker) => {
+    //         const response = await getAggregateData(ticker);
+    //     })
+    // }, 2000);
+
+    // tickers.forEach(async ticker => {    
+    //     const response = await getAggregateData(ticker);
+    //     console.log(response);
+    // })
+
+    const r = await getAggregateData('MSFT');
+    console.log(r)
+ 
 }
 
-imDumb();
+buy_near_low();
+
+module.exports = buy_near_low;
 
 
 
