@@ -48,8 +48,6 @@ async function getAggregateData(ticker) {
         }
     }
 
-    // console.log(sanitized_data)
-
     return {
         ticker,
         periodic_low
