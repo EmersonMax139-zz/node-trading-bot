@@ -19,14 +19,19 @@ class Alpaca_Api {
      * @param {Number} qty - # of shares you wanna buy 
      *  Submit a market order at market price
      */
-    createBuyOrder(ticker, qty) {
-        return this.alpaca.createOrder({
-            symbol: ticker,
-            qty: qty,
-            side: 'buy',
-            type: 'market',
-            time_in_force: 'day'
-        })
+    createBuyOrder(ticker, qty, limit_price, type) {
+        if(qty > 0) {
+            return this.alpaca.createOrder({
+                symbol: ticker,
+                qty: qty,
+                side: 'buy',
+                type: type,
+                time_in_force: 'day',
+                limit_price: limit_price
+            })
+        } else {
+            console.log("quantity must be greater than 0");
+        }    
     }
 
     /**
@@ -35,15 +40,19 @@ class Alpaca_Api {
      * Submit a limit order to attempt to sell at
      * particular price when the market opens
      */
-    createSellOrder(ticker, qty) {
-        return this.alpaca.createOrder({
-            symbol: 'AMD',
-            qty: 1,
-            side: 'sell',
-            type: 'limit',
-            time_in_force: 'opg',
-            limit_price: 20.50
-        })
+    createSellOrder(ticker, qty, limit_price, type) {
+        if(qty > 0) {
+            return this.alpaca.createOrder({
+                symbol: ticker,
+                qty: qty,
+                side: 'sell',
+                type: type,
+                time_in_force: 'day',
+                limit_price: limit_price
+            })
+        } else {
+            console.log("Quantity must be greater than 0")
+        }    
     }
 
     /**
@@ -60,6 +69,13 @@ class Alpaca_Api {
      */
     getOrders(params) {
         return this.alpaca.getOrders(params)
+    }
+
+    /**
+     * Get account
+     */
+    getAccount() {
+        return this.alpaca.getAccount();
     }
 
     /**
@@ -90,6 +106,13 @@ class Alpaca_Api {
      */
     getClock() {
         return this.alpaca.getClock();
+    }
+
+    /**
+     * @param {Object} params - (start, end)
+     */ 
+    getCalendar(params) {
+        return this.alpaca.getCalendar(params);
     }
 
 }

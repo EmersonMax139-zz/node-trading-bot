@@ -43,7 +43,14 @@ async function clock() {
     })
 }
 
-clock();
+async function account() {
+    await alpaca.getAccount().then(response => {
+        console.log(response);
+    })
+}
+
+
+account();
 
 
 
