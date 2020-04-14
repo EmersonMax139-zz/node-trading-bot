@@ -20,7 +20,7 @@ class Alpaca_Api {
      *  Submit a market order at market price
      */
     createBuyOrder(ticker, qty) {
-        this.alpaca.createOrder({
+        return this.alpaca.createOrder({
             symbol: ticker,
             qty: qty,
             side: 'buy',
@@ -36,7 +36,7 @@ class Alpaca_Api {
      * particular price when the market opens
      */
     createSellOrder(ticker, qty) {
-        this.alpaca.createOrder({
+        return this.alpaca.createOrder({
             symbol: 'AMD',
             qty: 1,
             side: 'sell',
@@ -47,11 +47,51 @@ class Alpaca_Api {
     }
 
     /**
+     * Cancel order
+     * @param {String} id  
+     */
+    cancelOrder(id) {
+        return this.alpaca.cancelOrder(id);
+    }
+
+    /**
+     * Get orders
+     * @param {Object} params - (status, direction)
+     */
+    getOrders(params) {
+        return this.alpaca.getOrders(params)
+    }
+
+    /**
      * Get all positions for logged in account
      */
     getPositions() {
         return this.alpaca.getPositions()
     }
+
+
+    /**
+     * Get single position
+     */
+    getPosition(ticker) {
+        return this.alpaca.getPosition(ticker);
+    }
+
+    /**
+     * Get bars
+     * @param {Object} params - optional (limit, ...) 
+     */
+    getBars(time, ticker, params) {
+        return this.alpaca.getBars(time, ticker, params)
+    }
+
+    /**
+     * 
+     */
+    getClock() {
+        return this.alpaca.getClock();
+    }
+
 }
 
 module.exports = Alpaca_Api;

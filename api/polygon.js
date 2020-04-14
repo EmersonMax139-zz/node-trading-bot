@@ -47,7 +47,7 @@ class Polygon_Api {
             })
         })
     }
-    
+
     /**
      * Returns some info on a given date range
      * @params {String} Date 
@@ -66,7 +66,7 @@ class Polygon_Api {
             })
         })
     }
-
+    
 }
 
 module.exports = Polygon_Api
