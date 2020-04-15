@@ -6,7 +6,7 @@ const tickers = require('../watchlist.js');
 // Initialize
 const polygon = new polygon_api;
 const alpaca = new alpaca_api;
-let ticker = 'MSFT';
+let ticker = 'VXX';
 
 // Globals (If this becomes a class put them in constructor)
 let time_to_close; 
@@ -25,6 +25,7 @@ const run = async function() {
     }).catch(err => console.log(err));
 
     orders.forEach(async (order) => {
+        console.log(`Cancelling order - ${order}`)
         alpaca.cancelOrder(order.id)
             .catch(err => console.log(err));
     })
@@ -118,7 +119,7 @@ async function rebalance() {
             position_value = response.market_value; 
             console.log(`You have ${position_quantity} shares of ${ticker} at $${position_value}..`)
         });
-    } catch (err) { console.log(err) }
+    } catch (err) { console.log(`No positions found - ${err}`)}
 
     // Get new updated price and running average (limit can be configured)
     let bars;
@@ -154,7 +155,7 @@ async function rebalance() {
         // portfolio_share - number of shares we should buy based on difference in price from running average
         let portfolio_share = (running_average - current_price) / current_price * 200;
         let target_position_value = portfolio_value * portfolio_share;
-        let amount_to_add = target_position_value - position_value;
+        let amount_to_add = (target_position_value - position_value) / 5; // Dividing by 5 so it doesn't use whole portfolio
 
         console.log(`Finding optimal amount - portfolio_share: ${portfolio_share} target_position_value: ${target_position_value} amount_to_add: ${amount_to_add}`)
 
@@ -162,14 +163,20 @@ async function rebalance() {
         if(amount_to_add > 0) {
             if(amount_to_add > buying_power) amount_to_add = buying_power;
             let qty_to_buy = Math.floor(amount_to_add / current_price);
+
             console.log(`Buying ${qty_to_buy} shares of ${ticker} at limit $${current_price}...`)
-            await alpaca.createBuyOrder(ticker, qty_to_buy, current_price, 'limit');
+            await alpaca.createBuyOrder(ticker, qty_to_buy, current_price, 'limit').then(response => {
+                console.log("Shares purchased")
+            }).catch(err => console.log(`Error with limit buy - ${err}`));
         } else {
             amount_to_add *= -1;
             let qty_to_sell = Math.floor(amount_to_add / current_price);
             if(qty_to_sell > position_quantity) qty_to_sell = position_quantity;
+
             console.log(`Selling ${qty_to_sell} shares of ${ticker} at limit $${current_price}...`)
-            await alpaca.createSellOrder(ticker, qty_to_sell, current_price, 'limit');
+            await alpaca.createSellOrder(ticker, qty_to_sell, current_price, 'limit').then(response => {
+                console.log("Shares sold")
+            }).catch(err => console.log(`Error with limit sell - ${err}`));
         }
     }
 }

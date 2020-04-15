@@ -31,6 +31,7 @@ class Alpaca_Api {
             })
         } else {
             console.log("quantity must be greater than 0");
+            return; 
         }    
     }
 
@@ -52,6 +53,7 @@ class Alpaca_Api {
             })
         } else {
             console.log("Quantity must be greater than 0")
+            return;
         }    
     }
 
