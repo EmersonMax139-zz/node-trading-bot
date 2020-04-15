@@ -1,1 +1,3 @@
-Trading App
+Node trading bot 
+
+Current strategies in `/scripts` 
