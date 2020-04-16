@@ -6,7 +6,7 @@ const tickers = require('../watchlist.js');
 // Initialize
 const polygon = new polygon_api;
 const alpaca = new alpaca_api;
-let ticker = 'VXX';
+let ticker = 'MSFT';
 
 // Globals (If this becomes a class put them in constructor)
 let time_to_close; 
@@ -152,10 +152,9 @@ async function rebalance() {
             buying_power = response.buying_power;
         }).catch(err => console.log(err));
         
-        // portfolio_share - number of shares we should buy based on difference in price from running average
-        let portfolio_share = (running_average - current_price) / current_price * 200;
+        let portfolio_share = (running_average - current_price) / current_price * 200; // Percentage of portfolio we should buy based on difference in price from running average
         let target_position_value = portfolio_value * portfolio_share;
-        let amount_to_add = (target_position_value - position_value) / 5; // Dividing by 5 so it doesn't use whole portfolio
+        let amount_to_add = (target_position_value - position_value) / 5; //  Dollar representation of how much to buy - dividing by 5 so it doesn't use whole portfolio
 
         console.log(`Finding optimal amount - portfolio_share: ${portfolio_share} target_position_value: ${target_position_value} amount_to_add: ${amount_to_add}`)
 
