@@ -6,7 +6,7 @@ const tickers = require('../watchlist.js');
 // Initialize
 const polygon = new polygon_api;
 const alpaca = new alpaca_api;
-let ticker = 'MSFT';
+let ticker = 'AMD';
 
 // Globals (If this becomes a class put them in constructor)
 let time_to_close; 
@@ -209,4 +209,4 @@ async function waitForMarketOpen() {
     });    
 }
 
-run();
+module.exports = run;
