@@ -85,7 +85,7 @@ const run = async function() {
             console.log("Market closing in 15 minutes. Closing Positions");
             
             // Loop through all positions on watchlist
-            tickers.forEach(ticker => {
+            tickers.forEach(async (ticker) => {
                 try {
                     await alpaca.getPosition(ticker).then(async (response) => {
                         let position_quantity = response.qty;
@@ -108,7 +108,7 @@ const run = async function() {
                 await rebalance(ticker);
             }); 
         }
-    }, 60000)
+    }, 120000)
 
 }
 
@@ -155,12 +155,12 @@ async function rebalance(ticker) {
         let buying_power; 
         await alpaca.getAccount().then(response => {
             portfolio_value = response.portfolio_value;
-            buying_power = response.buying_power;
+            buying_power = response.buying_power / tickers.length;
         }).catch(err => console.log(err));
         
         let portfolio_share = (running_average - current_price) / current_price * 200; // Percentage of portfolio we should buy based on difference in price from running average
         let target_position_value = portfolio_value * portfolio_share;
-        let amount_to_add = (target_position_value - position_value) / tickers.length; //  Dollar representation of how much to buy - dividing by # of tickers so each gets a fraction of buying power
+        let amount_to_add = (target_position_value - position_value); //  Dollar representation of how much to buy - dividing by # of tickers so each gets a fraction of buying power
 
         console.log(`Finding optimal amount - portfolio_share: ${portfolio_share} target_position_value: ${target_position_value} amount_to_add: ${amount_to_add}`)
 

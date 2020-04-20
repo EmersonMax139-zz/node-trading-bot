@@ -30,6 +30,7 @@ class Alpaca_Api {
                 limit_price: limit_price
             })
         } else {
+            // Issue here that this isn't returing a promise. The .then() in the scripts throws an error - Doesn't really change script
             console.log("quantity must be greater than 0");
             return; 
         }    
@@ -52,6 +53,7 @@ class Alpaca_Api {
                 limit_price: limit_price
             })
         } else {
+            // Issue here that this isn't returing a promise. The .then() in the scripts throws an error - Doesn't really change script
             console.log("Quantity must be greater than 0")
             return;
         }    
