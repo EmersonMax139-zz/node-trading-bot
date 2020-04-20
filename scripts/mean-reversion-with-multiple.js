@@ -84,12 +84,15 @@ const run = async function() {
             // Close all positions when there's 15 minutes until market close
             console.log("Market closing in 15 minutes. Closing Positions");
             
-            try {
-                await alpaca.getPosition(ticker).then(async (response) => {
-                    let position_quantity = response.qty;
-                    await alpaca.createSellOrder(ticker, position_quantity, null, 'market')
-                }).catch(err => console.log(err))
-            } catch (err) { console.log(err); }
+            // Loop through all positions on watchlist
+            tickers.forEach(ticker => {
+                try {
+                    await alpaca.getPosition(ticker).then(async (response) => {
+                        let position_quantity = response.qty;
+                        await alpaca.createSellOrder(ticker, position_quantity, null, 'market')
+                    }).catch(err => console.log(err))
+                } catch (err) { console.log(err); }
+            })    
             clearInterval(spin);
             console.log("Sleeping for 15 minutes until market closes.")
             
