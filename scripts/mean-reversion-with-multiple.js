@@ -215,4 +215,4 @@ async function waitForMarketOpen() {
     });    
 }
 
-run();
+module.exports = run;
