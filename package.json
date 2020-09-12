@@ -16,7 +16,7 @@
     "@alpacahq/alpaca-trade-api": "^1.2.9",
     "moment": "^2.24.0",
     "node-cron": "^2.0.3",
-    "node-fetch": "^2.6.0",
+    "node-fetch": "^2.6.1",
     "websocket": "^1.0.31"
   }
 }
